@@ -190,7 +190,7 @@
   .gallery__row > .gallery__item:nth-child(4){ transition-delay:0.3s; }
 
   /* ---------- hero ---------- */
-  .hero{ padding-top:clamp(3rem,7vw,5rem); overflow:hidden; }
+  .hero{ padding-top:clamp(1.75rem,4vw,3rem); overflow:hidden; }
   .hero__glow{
     position:absolute; inset:-20% -10% auto -10%; height:120%;
     background:
@@ -206,6 +206,39 @@
     to{ transform:translate3d(-2%,3%,0) scale(1.06); }
   }
   @media (prefers-reduced-motion: reduce){ .hero__glow{ animation:none; } }
+
+  /* Auto-scrolling character banner, above the fold. Two back-to-back
+     copies of the same sequence + a -50% translateX loop = seamless,
+     no jump at the seam. */
+  .marquee{
+    position:relative;
+    max-width:1180px; margin:0 auto clamp(1.5rem,4vw,2.5rem);
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marquee__label{
+    font-family:"Space Mono",monospace; font-size:0.68rem; letter-spacing:0.1em;
+    color:var(--mist-dim); text-transform:uppercase; text-align:center;
+    margin-bottom:0.7rem;
+  }
+  .marquee__viewport{ overflow:hidden; }
+  .marquee__track{
+    display:flex; align-items:center; gap:0.9rem; width:max-content;
+    animation:marquee-scroll 26s linear infinite;
+  }
+  .marquee:hover .marquee__track{ animation-play-state:paused; }
+  @keyframes marquee-scroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+  .marquee__chip{
+    flex:none; width:74px; aspect-ratio:760/1016;
+    border-radius:12px; overflow:hidden;
+    background:var(--violet-soft);
+    box-shadow:0 10px 22px -10px rgba(0,0,0,0.6);
+  }
+  .marquee__chip img{ width:100%; height:100%; object-fit:cover; display:block; }
+  @media (prefers-reduced-motion: reduce){ .marquee__track{ animation:none; } }
 
   .hero__inner{
     position:relative;
@@ -501,6 +534,23 @@
 
   <section class="hero" id="top">
     <div class="hero__glow" aria-hidden="true"></div>
+
+    <div class="marquee" aria-hidden="true">
+      <p class="marquee__label">Real Run Friends renders</p>
+      <div class="marquee__viewport">
+        <div class="marquee__track">
+          <div class="marquee__chip"><img src="images/christina-marathon.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/backpack-guy-miami.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/bandana-utah.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/older-man-miami.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/christina-marathon.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/backpack-guy-miami.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/bandana-utah.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__chip"><img src="images/older-man-miami.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="hero__inner">
       <div class="hero__copy">
         <p class="eyebrow">Strava &rarr; AI &rarr; Instagram</p>
