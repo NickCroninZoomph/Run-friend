@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read their own profile (generation count, entitlement,
+    // Strava connection status) but never write it directly — every
+    // mutation goes through a Cloud Function using the Admin SDK, which
+    // bypasses these rules. This keeps entitlement and OAuth tokens
+    // trustworthy.
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+  }
+}

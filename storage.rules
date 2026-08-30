@@ -1,0 +1,12 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Selfies/generated avatars are written by Cloud Functions (Admin SDK,
+    // bypasses these rules). Clients can read only their own generated
+    // results once a function has written them.
+    match /users/{userId}/{allPaths=**} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+  }
+}

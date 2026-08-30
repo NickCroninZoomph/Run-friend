@@ -1,0 +1,46 @@
+name: RunFriend
+options:
+  bundleIdPrefix: com.runfriend
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Release: release
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+targets:
+  RunFriend:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: RunFriend
+    info:
+      path: Generated/Info.plist
+      properties:
+        UILaunchScreen: {}
+        # Custom scheme the app is opened back through once the Strava OAuth
+        # web flow (ASWebAuthenticationSession) completes server-side.
+        CFBundleURLTypes:
+          - CFBundleURLSchemes:
+              - runfriend
+        # Required so `UIApplication.canOpenURL`/`open` can reach Instagram
+        # for the Stories share sheet.
+        LSApplicationQueriesSchemes:
+          - instagram-stories
+        NSPhotoLibraryAddUsageDescription: "Run Friend saves your generated avatar to your Photos library when you tap Save."
+        NSPhotoLibraryUsageDescription: "Run Friend needs access to your photo library so you can pick a selfie to generate your avatar."
+        NSCameraUsageDescription: "Run Friend can use your camera to take a selfie for your avatar."
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.runfriend.app
+        TARGETED_DEVICE_FAMILY: "1"
+schemes:
+  RunFriend:
+    build:
+      targets:
+        RunFriend: all
+    run:
+      config: Debug

@@ -1,0 +1,28 @@
+# Xcode (project.xcodeproj is generated via `xcodegen generate` — see README)
+RunFriend/*.xcodeproj/
+RunFriend/Generated/
+xcuserdata/
+DerivedData/
+.build/
+*.xcuserstate
+
+# Firebase client config (never commit real keys)
+GoogleService-Info.plist
+serviceAccountKey.json
+
+# Node / Firebase Functions
+functions/node_modules/
+functions/lib/
+npm-debug.log*
+.env
+.env.local
+!.env.example
+
+# Firebase tooling
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# macOS
+.DS_Store
