@@ -240,6 +240,43 @@
   .marquee__chip img{ width:100%; height:100%; object-fit:cover; display:block; }
   @media (prefers-reduced-motion: reduce){ .marquee__track{ animation:none; } }
 
+  /* Mobile: the hero becomes a full-screen, edge-to-edge background
+     carousel — each slide fills the whole viewport — with the headline
+     overlaid on a scrim instead of sitting beside a phone mockup. */
+  @media (max-width:920px){
+    .nav{ position:fixed; top:0; left:0; right:0; background:transparent; }
+    .nav.is-scrolled{ background:rgba(24,15,62,0.82); }
+
+    .hero{
+      padding:0;
+      min-height:100dvh;
+      display:flex;
+      align-items:flex-end;
+    }
+    .hero__glow{ display:none; }
+    .hero__scrim{
+      position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:linear-gradient(180deg,
+        rgba(15,10,40,0.05) 0%,
+        rgba(15,10,40,0.32) 38%,
+        rgba(15,10,40,0.86) 70%,
+        var(--void) 96%);
+    }
+    .marquee{
+      position:absolute; inset:0; z-index:0; margin:0; max-width:none;
+      -webkit-mask-image:none; mask-image:none;
+    }
+    .marquee__label{ display:none; }
+    .marquee__viewport, .marquee__track{ height:100%; }
+    .marquee__track{ gap:0; animation-duration:38s; }
+    .marquee__chip{
+      flex:0 0 100vw; width:100vw; height:100%;
+      aspect-ratio:auto; border-radius:0; box-shadow:none; background:var(--void);
+    }
+    .hero__inner{ position:relative; z-index:2; width:100%; padding:0 1.25rem clamp(2rem,8vh,3.25rem); }
+    .hero .hero__stage{ display:none; }
+  }
+
   .hero__inner{
     position:relative;
     max-width:1180px; margin:0 auto;
@@ -534,6 +571,7 @@
 
   <section class="hero" id="top">
     <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
 
     <div class="marquee" aria-hidden="true">
       <p class="marquee__label">Real Run Friends renders</p>
