@@ -115,6 +115,33 @@
   }
   .btn--ghost:hover{ background:rgba(255,255,255,0.14); }
 
+  /* App Store-style badge. Placeholder recreation, not Apple's official
+     asset (that has to be fetched from Apple's own CDN and used per their
+     marketing guidelines) — swap before this goes out publicly. */
+  .store-badge{
+    display:inline-flex; align-items:center; gap:0.65rem;
+    background:#0A0A0A; color:#fff;
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:14px;
+    padding:0.55rem 1.15rem 0.55rem 1rem;
+    box-shadow:0 14px 34px -14px rgba(0,0,0,0.7);
+    transition:transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .store-badge:hover{ transform:translateY(-2px); background:#000; }
+  .store-badge svg{ width:26px; height:26px; flex:none; }
+  .store-badge__text{ display:flex; flex-direction:column; line-height:1.05; }
+  .store-badge__eyebrow{
+    font-family:"Manrope",sans-serif; font-size:0.68rem; font-weight:500; letter-spacing:0.01em;
+    color:rgba(255,255,255,0.85);
+  }
+  .store-badge__name{
+    font-family:"Manrope",sans-serif; font-size:1.28rem; font-weight:700; letter-spacing:-0.01em;
+  }
+  .store-badge--lg{ padding:0.7rem 1.4rem 0.7rem 1.15rem; border-radius:16px; }
+  .store-badge--lg svg{ width:32px; height:32px; }
+  .store-badge--lg .store-badge__eyebrow{ font-size:0.76rem; }
+  .store-badge--lg .store-badge__name{ font-size:1.55rem; }
+
   /* ---------- nav ---------- */
   .nav{
     position:sticky; top:0; z-index:100;
@@ -370,6 +397,19 @@
   .footer__dot{ opacity:0.5; }
 </style>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="apple-generic-mark" viewBox="0 0 24 24">
+    <!-- Generic apple-fruit glyph (not Apple Inc.'s logo) used only as a
+         placeholder for the store-badge until the real Apple-provided
+         "Download on the App Store" artwork replaces it. -->
+    <circle cx="9" cy="14.6" r="5.3" fill="#fff"/>
+    <circle cx="14.6" cy="13.6" r="6.1" fill="#fff"/>
+    <circle cx="17.2" cy="9.2" r="3.5" fill="#0A0A0A"/>
+    <rect x="11.3" y="3" width="1.4" height="4.2" rx="0.7" fill="#fff"/>
+    <ellipse cx="14.2" cy="5.4" rx="2.6" ry="1.25" fill="#fff" transform="rotate(-28 14.2 5.4)"/>
+  </symbol>
+</svg>
+
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav" id="nav">
@@ -409,7 +449,13 @@
         <h1 class="display display--hero">Turn your run into a friend worth bragging about.</h1>
         <p class="lede">Connect Strava, add a selfie, and Run Friends renders a character holding your real stats — pace, splits, elevation, all of it — ready for your story in under fifteen seconds.</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="#get">Get Run Friends — it's free</a>
+          <a class="store-badge" href="#get" aria-label="Download Run Friends on the App Store">
+<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#apple-generic-mark"/></svg>
+            <span class="store-badge__text">
+              <span class="store-badge__eyebrow">Download on the</span>
+              <span class="store-badge__name">App Store</span>
+            </span>
+          </a>
           <a class="btn btn--text" href="#how">See how it works <span aria-hidden="true">&darr;</span></a>
         </div>
       </div>
@@ -561,7 +607,13 @@
 
   <section class="cta" id="get" data-reveal>
     <h2 class="display display--hero">Your next run deserves a better flex.</h2>
-    <a class="btn btn--primary btn--lg" href="#top">Get Run Friends</a>
+    <a class="store-badge store-badge--lg" href="#top" aria-label="Download Run Friends on the App Store">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#apple-generic-mark"/></svg>
+      <span class="store-badge__text">
+        <span class="store-badge__eyebrow">Download on the</span>
+        <span class="store-badge__name">App Store</span>
+      </span>
+    </a>
     <p class="cta__note">Free on the App Store. Requires a Strava account.</p>
   </section>
 
