@@ -1,4 +1,5 @@
 <title>Run Friends</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap">
 <style>
   :root{
@@ -37,7 +38,10 @@
     overflow-x:hidden;
   }
 
-  h1,h2,h3{ margin:0; text-wrap:balance; }
+  h1,h2,h3{ margin:0; }
+  @media (min-width:960px){
+    h1,h2,h3{ text-wrap:balance; }
+  }
   p{ margin:0; }
   a{ color:inherit; }
   ul,ol{ margin:0; padding:0; list-style:none; }
@@ -87,7 +91,7 @@
     font-family:"Manrope",sans-serif; font-weight:700; font-size:0.98rem;
     padding:0.9rem 1.7rem;
     border-radius:999px;
-    white-space:nowrap;
+    text-align:center;
     transition:transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s ease, background 0.25s ease;
   }
   .btn--primary{
@@ -170,7 +174,7 @@
   }
   @media (max-width:920px){ .hero__inner{ grid-template-columns:1fr; } }
 
-  .hero__copy{ display:flex; flex-direction:column; gap:1.4rem; }
+  .hero__copy{ display:flex; flex-direction:column; gap:1.4rem; min-width:0; }
   .hero__copy .eyebrow{ opacity:0; animation:rise 0.7s 0.05s cubic-bezier(.2,.7,.2,1) forwards; }
   .hero__copy h1{ opacity:0; animation:rise 0.8s 0.18s cubic-bezier(.2,.7,.2,1) forwards; }
   .hero__copy .lede{ opacity:0; animation:rise 0.8s 0.32s cubic-bezier(.2,.7,.2,1) forwards; }
@@ -180,7 +184,7 @@
     .hero__copy .eyebrow, .hero__copy h1, .hero__copy .lede, .hero__actions{ animation:none; opacity:1; }
   }
 
-  .hero__stage{ display:flex; justify-content:center; }
+  .hero__stage{ display:flex; justify-content:center; min-width:0; }
   .phone{
     position:relative;
     width:min(340px, 84vw);
@@ -281,6 +285,7 @@
     background:var(--violet); border:1px solid var(--violet-line);
     border-radius:20px; padding:1.8rem 1.6rem;
     display:flex; flex-direction:column; gap:0.7rem;
+    min-width:0;
   }
   .step__num{
     font-family:"Space Mono",monospace; font-weight:700; color:var(--sunset-2); font-size:0.85rem;
@@ -294,6 +299,7 @@
     display:grid; grid-template-columns:1fr 0.85fr; gap:clamp(2rem,6vw,4rem); align-items:center;
   }
   @media (max-width:880px){ .showcase{ grid-template-columns:1fr; } }
+  .showcase__text{ min-width:0; }
   .showcase__text .lede{ margin-top:0.9rem; }
   .stat-card--static{ margin:0 auto; width:min(340px, 100%); }
   .stat-card--static .stat-card__achievement{ opacity:1; transform:none; }
@@ -305,6 +311,7 @@
     display:grid; grid-template-columns:0.95fr 1.05fr; gap:clamp(2rem,6vw,4rem); align-items:center;
   }
   @media (max-width:880px){ .export{ grid-template-columns:1fr; } .export__phone{ order:-1; } }
+  .export__text{ min-width:0; }
   .export__text .lede{ margin-top:0.9rem; }
   .export__phone{ display:flex; justify-content:center; }
   .export__frame{
@@ -340,6 +347,7 @@
   .price-card{
     background:var(--violet); border:1px solid var(--violet-line); border-radius:24px;
     padding:2rem 1.8rem; display:flex; flex-direction:column; gap:0.6rem;
+    min-width:0;
   }
   .price-card--accent{
     background:linear-gradient(160deg, var(--violet-soft), var(--violet));
@@ -398,7 +406,7 @@
     <div class="hero__inner">
       <div class="hero__copy">
         <p class="eyebrow">Strava &rarr; AI &rarr; Instagram</p>
-        <h1 class="display display--hero">Turn your run into a friend worth&nbsp;bragging&nbsp;about.</h1>
+        <h1 class="display display--hero">Turn your run into a friend worth bragging about.</h1>
         <p class="lede">Connect Strava, add a selfie, and Run Friends renders a character holding your real stats — pace, splits, elevation, all of it — ready for your story in under fifteen seconds.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#get">Get Run Friends — it's free</a>
