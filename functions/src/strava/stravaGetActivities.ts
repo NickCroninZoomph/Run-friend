@@ -53,6 +53,13 @@ export const stravaGetActivities = onCall(async (request) => {
       elevationGainMeters: activity.total_elevation_gain,
       averageHeartRate: activity.average_heartrate ?? null,
       calories: activity.calories ?? null,
+      locationCity: activity.location_city ?? null,
+      locationState: activity.location_state ?? null,
+      // TODO(open question): still the raw encoded polyline — decode it
+      // (Google's encoded polyline algorithm) and normalize to card-space
+      // points, or render a real map snapshot, before this reaches
+      // RunActivity.routePoints on the client. See README.
+      mapSummaryPolyline: activity.map?.summary_polyline ?? null,
     })),
   };
 });

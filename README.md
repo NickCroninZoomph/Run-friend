@@ -16,6 +16,7 @@ RunFriend/                  # SwiftUI app (MVVM, iOS 17+, Swift Concurrency)
       Models/                 RunActivity, RunStats, GenerationStyle, Entitlement, GeneratedAvatar
       Networking/              StravaAPI / GenerationAPI / PurchaseAPI protocols + Mock implementations
       StatsCard/               StatsCardView + StatsCardRenderer (ImageRenderer -> PNG)
+      Branding/                RunFriendBrandMark + BrandMarkCompositor (composites the logo onto the result, deterministically, same reasoning as the stats card)
       Storage/                 EntitlementStore (local cache only; server is source of truth)
     Features/
       Onboarding, StravaConnect, ActivityPicker, PhotoUpload,
@@ -103,6 +104,25 @@ server — no code changes needed later, just fill in `.env`.
 3. **Units on the stats card.** Currently hardcoded to imperial (miles,
    feet) in `RunStats`. Should this follow device locale instead?
 
+3b. **Route map rendering.** Per the reference designs you shared, the card
+   now has a route thumbnail. `RunActivity.routePoints` is mock/placeholder
+   data — real routes need Strava's encoded `map.summary_polyline` (now
+   passed through by `stravaGetActivities.ts`, undecoded) turned into
+   either normalized points for the current stylized-line thumbnail, or a
+   real MapKit snapshot like the references show. MapKit gets you the
+   actual map tiles but is more work (region fitting, snapshot rendering,
+   attribution); the stylized line is what's implemented now. Which do you
+   want for v1?
+
+3c. **Achievement line data source.** The reference cards show "Nice work!
+   You were in the top 10% of runs this week" / "Congrats! You just set
+   your 2nd fastest time." Strava's API doesn't expose a percentile field —
+   this needs to be computed against the athlete's own activity history
+   (which `stravaGetActivities` already fetches), e.g. "top N% of your own
+   runs this week/month" or "Nth fastest on a route with this name." Worth
+   scoping as its own small function once you confirm which comparison you
+   want.
+
 4. **Style-reference images.** `GenerationStyleCatalog` currently just names
    five placeholder styles with no actual reference art yet. Should those
    ship bundled in the app (simple, but a new style needs an App Store
@@ -129,6 +149,15 @@ server — no code changes needed later, just fill in `.env`.
 8. **Token encryption at rest.** Strava access/refresh tokens are currently
    stored as plain Firestore fields. Flagged as a TODO to add Cloud KMS
    envelope encryption before this handles real user tokens.
+
+9. **Brand assets.** `RunFriendBrandMark` (the "run Friends" sunset logo +
+   wordmark composited onto every result image) is a hand-drawn SwiftUI
+   approximation of the reference branding, not the real asset. Swap it for
+   final logo files whenever you have them — same for the character art
+   style, which your reference images confirm is photorealistic 3D-render
+   (not flat "cartoon"), so `GenerationStyleCatalog`'s style-reference
+   images should be produced in that style rather than something like
+   comic/pixel/anime as originally scaffolded.
 
 None of these block continuing to build (the mocked scaffold works
 end-to-end today) — flagging them now so the real integrations get built

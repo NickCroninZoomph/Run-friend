@@ -17,6 +17,11 @@ export interface StravaActivity {
   total_elevation_gain: number; // meters
   average_heartrate?: number;
   calories?: number;
+  location_city?: string | null;
+  location_state?: string | null;
+  // Google's encoded polyline algorithm. Not decoded here — see the TODO
+  // in stravaGetActivities.ts.
+  map?: { summary_polyline?: string };
 }
 
 const MOCK_TOKEN: StravaTokenResponse = {
@@ -37,6 +42,9 @@ const MOCK_ACTIVITIES: StravaActivity[] = [
     total_elevation_gain: 45,
     average_heartrate: 152,
     calories: 512,
+    location_city: "Miami",
+    location_state: "FL",
+    map: { summary_polyline: "_p~iF~ps|U_ulLnnqC_mqNvxq`@" },
   },
   {
     id: 2,
@@ -48,6 +56,9 @@ const MOCK_ACTIVITIES: StravaActivity[] = [
     total_elevation_gain: 22,
     average_heartrate: 168,
     calories: 430,
+    location_city: "Salt Lake City",
+    location_state: "UT",
+    map: { summary_polyline: "kfrjKrhh}}Cq@iEcOsHf@" },
   },
 ];
 

@@ -8,7 +8,7 @@ struct ResultView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            if let uiImage = UIImage(data: viewModel.avatar.imageData) {
+            if let uiImage = UIImage(data: viewModel.displayImageData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
@@ -18,7 +18,7 @@ struct ResultView: View {
 
             VStack(spacing: 12) {
                 Button {
-                    InstagramStoryShare.shareBackground(imageData: viewModel.avatar.imageData)
+                    InstagramStoryShare.shareBackground(imageData: viewModel.displayImageData)
                 } label: {
                     Label("Share to Instagram Story", systemImage: "square.and.arrow.up")
                         .frame(maxWidth: .infinity)
@@ -61,14 +61,14 @@ struct ResultView: View {
         .navigationTitle("Your Avatar")
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $isShareSheetPresented) {
-            if let uiImage = UIImage(data: viewModel.avatar.imageData) {
+            if let uiImage = UIImage(data: viewModel.displayImageData) {
                 ActivityShareSheet(items: [uiImage])
             }
         }
     }
 
     private func saveToPhotos() {
-        guard let uiImage = UIImage(data: viewModel.avatar.imageData) else { return }
+        guard let uiImage = UIImage(data: viewModel.displayImageData) else { return }
         PHPhotoLibrary.shared().performChanges {
             PHAssetChangeRequest.creationRequestForAsset(from: uiImage)
         }
