@@ -158,7 +158,12 @@
     display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
   }
   .brand{ display:flex; align-items:center; gap:0.55rem; text-decoration:none; }
-  .brand__mark{ width:28px; height:22px; display:block; }
+  .brand__mark{ width:28px; height:22px; display:block; animation:sunset-breathe 4.5s ease-in-out infinite; }
+  @keyframes sunset-breathe{
+    0%, 100%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.08); opacity:0.85; }
+  }
+  @media (prefers-reduced-motion: reduce){ .brand__mark{ animation:none; } }
   .brand__word{
     font-family:"Fredoka",sans-serif; font-weight:700; font-size:1.15rem; color:var(--white-90);
   }
@@ -174,6 +179,15 @@
 
   [data-reveal]{ opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.2,.7,.2,1), transform 0.8s cubic-bezier(.2,.7,.2,1); }
   [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
+  /* Staggered entrances for grouped items — each group's siblings enter in
+     sequence rather than all at once. */
+  .steps__list > .step:nth-child(1){ transition-delay:0s; }
+  .steps__list > .step:nth-child(2){ transition-delay:0.12s; }
+  .steps__list > .step:nth-child(3){ transition-delay:0.24s; }
+  .gallery__row > .gallery__item:nth-child(1){ transition-delay:0s; }
+  .gallery__row > .gallery__item:nth-child(2){ transition-delay:0.1s; }
+  .gallery__row > .gallery__item:nth-child(3){ transition-delay:0.2s; }
+  .gallery__row > .gallery__item:nth-child(4){ transition-delay:0.3s; }
 
   /* ---------- hero ---------- */
   .hero{ padding-top:clamp(3rem,7vw,5rem); overflow:hidden; }
@@ -313,7 +327,9 @@
     border-radius:20px; padding:1.8rem 1.6rem;
     display:flex; flex-direction:column; gap:0.7rem;
     min-width:0;
+    transition:transform 0.3s cubic-bezier(.2,.8,.2,1), border-color 0.3s ease;
   }
+  .step:hover{ transform:translateY(-4px); border-color:rgba(255,255,255,0.22); }
   .step__num{
     font-family:"Space Mono",monospace; font-weight:700; color:var(--sunset-2); font-size:0.85rem;
   }
@@ -340,6 +356,11 @@
     border-radius:18px;
     background:var(--violet-soft);
     box-shadow:0 20px 40px -18px rgba(0,0,0,0.55);
+    transition:transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease;
+  }
+  .gallery__item:hover img{
+    transform:translateY(-8px) scale(1.015);
+    box-shadow:0 28px 54px -16px rgba(0,0,0,0.65);
   }
   .gallery__item figcaption{
     font-family:"Space Mono",monospace; font-size:0.74rem; color:var(--mist);
@@ -355,8 +376,6 @@
   .showcase__text{ min-width:0; }
   .showcase__text .lede{ margin-top:0.9rem; }
   .stat-card--static{ margin:0 auto; width:min(340px, 100%); }
-  .stat-card--static .stat-card__achievement{ opacity:1; transform:none; }
-  .stat-card--static .route-path{ stroke-dashoffset:0; transition:none; }
 
   /* ---------- export ---------- */
   .export{
@@ -367,6 +386,13 @@
   .export__text{ min-width:0; }
   .export__text .lede{ margin-top:0.9rem; }
   .export__phone{ display:flex; justify-content:center; }
+  /* Overrides the generic [data-reveal] fade+slide with a spring-loaded
+     pop, echoing the "arriving" motion of a card landing in a Story. */
+  .export__phone[data-reveal]{
+    transform:scale(0.82) translateY(16px);
+    transition:opacity 0.7s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .export__phone[data-reveal].is-visible{ transform:scale(1) translateY(0); }
   .export__frame{
     width:min(280px,80vw); aspect-ratio:9/17.5; border-radius:38px;
     background:linear-gradient(200deg, var(--sunset-1), var(--sunset-2) 45%, var(--sunset-3));
@@ -401,6 +427,12 @@
     background:var(--violet); border:1px solid var(--violet-line); border-radius:24px;
     padding:2rem 1.8rem; display:flex; flex-direction:column; gap:0.6rem;
     min-width:0;
+    transition:transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .price-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 24px 44px -20px rgba(0,0,0,0.55);
+    border-color:rgba(255,255,255,0.24);
   }
   .price-card--accent{
     background:linear-gradient(160deg, var(--violet-soft), var(--violet));
@@ -524,7 +556,7 @@
               <span>Nice work! You were in the top 10% of runs this week.</span>
             </div>
           </div>
-          <button class="replay" id="replay-btn" type="button" aria-label="Replay the render animation">
+          <button class="replay" data-replay type="button" aria-label="Replay the render animation">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11A8 8 0 1 0 18.5 16"/><path d="M20 5v6h-6"/></svg>
             Regenerate
           </button>
@@ -555,24 +587,26 @@
     </ol>
   </section>
 
-  <section class="gallery" id="gallery" data-reveal>
-    <p class="eyebrow">Real renders</p>
-    <h2 class="display display--md">Meet a few Run Friends.</h2>
-    <p class="lede">Same app, same six stats, a different character every time.</p>
+  <section class="gallery" id="gallery">
+    <div data-reveal>
+      <p class="eyebrow">Real renders</p>
+      <h2 class="display display--md">Meet a few Run Friends.</h2>
+      <p class="lede">Same app, same six stats, a different character every time.</p>
+    </div>
     <div class="gallery__row">
-      <figure class="gallery__item">
+      <figure class="gallery__item" data-reveal>
         <img src="images/christina-marathon.jpg" alt="A Run Friends character in marathon gear holding a Strava card for a 26.21 mile New York City marathon" loading="lazy">
         <figcaption>Christina &middot; NYC Marathon &middot; 26.21 mi</figcaption>
       </figure>
-      <figure class="gallery__item">
+      <figure class="gallery__item" data-reveal>
         <img src="images/backpack-guy-miami.jpg" alt="A Run Friends character in running gear with a hydration pack holding a Strava card for a 6.21 mile Miami run" loading="lazy">
         <figcaption>Miami, FL &middot; 6.21 mi loop</figcaption>
       </figure>
-      <figure class="gallery__item">
+      <figure class="gallery__item" data-reveal>
         <img src="images/bandana-utah.jpg" alt="A Run Friends character in a bandana pointing at a Strava card for an 8.42 mile Utah trail run" loading="lazy">
         <figcaption>Utah trail &middot; 8.42 mi</figcaption>
       </figure>
-      <figure class="gallery__item">
+      <figure class="gallery__item" data-reveal>
         <img src="images/older-man-miami.jpg" alt="A Run Friends character holding a Strava card for a 6.21 mile Miami run, in the top 10 percent of runs that week" loading="lazy">
         <figcaption>Miami, FL &middot; top 10% this week</figcaption>
       </figure>
@@ -585,7 +619,7 @@
       <h2 class="display display--md">This is what lands in your camera roll.</h2>
       <p class="lede">Every number on the card is rendered on-device before your character is generated — no AI guessing at your splits. The distance, the pace, the personal record: it's really yours, pixel for pixel.</p>
     </div>
-    <div class="stat-card stat-card--static" data-reveal>
+    <div class="stat-card stat-card--static" id="showcase-card" data-card data-reveal>
       <div class="stat-card__brand">STRAVA</div>
       <div class="stat-card__athlete">
         <span class="stat-card__avatar">
@@ -603,16 +637,16 @@
       </div>
       <div class="stat-card__grid">
         <div class="stat-card__row">
-          <div class="stat"><span class="stat__label">Distance</span><span class="stat__value">26.21 mi</span></div>
+          <div class="stat"><span class="stat__label">Distance</span><span class="stat__value" data-count data-to="26.21" data-decimals="2" data-suffix=" mi">0.00 mi</span></div>
           <div class="stat"><span class="stat__label">Avg Pace</span><span class="stat__value">8:24 /mi</span></div>
         </div>
         <div class="stat-card__row">
           <div class="stat"><span class="stat__label">Moving Time</span><span class="stat__value">3:42:11</span></div>
-          <div class="stat"><span class="stat__label">Elev Gain</span><span class="stat__value">1,183 ft</span></div>
+          <div class="stat"><span class="stat__label">Elev Gain</span><span class="stat__value" data-count data-to="1183" data-suffix=" ft">0 ft</span></div>
         </div>
         <div class="stat-card__row stat-card__row--last">
-          <div class="stat"><span class="stat__label">Calories</span><span class="stat__value">2,412 Cal</span></div>
-          <div class="stat"><span class="stat__label">Avg HR</span><span class="stat__value">143 bpm</span></div>
+          <div class="stat"><span class="stat__label">Calories</span><span class="stat__value" data-count data-to="2412" data-suffix=" Cal">0 Cal</span></div>
+          <div class="stat"><span class="stat__label">Avg HR</span><span class="stat__value" data-count data-to="143" data-suffix=" bpm">0 bpm</span></div>
         </div>
       </div>
       <div class="stat-card__achievement">
@@ -705,11 +739,10 @@
       revealEls.forEach(function(el){ el.classList.add("is-visible"); });
     }
 
-    // Hero card render sequence: draw route -> count stats -> reveal achievement
-    var heroCard = document.getElementById("hero-card");
-    var replayBtn = document.getElementById("replay-btn");
-    var countEls = heroCard ? heroCard.querySelectorAll("[data-count]") : [];
-
+    // Card render sequence: draw route -> count stats -> reveal achievement.
+    // Reused for every ".stat-card[data-card]" on the page (hero + showcase)
+    // so the page's core "generation" moment reads as one consistent motion
+    // language wherever the card appears.
     function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
     function animateCount(el){
@@ -732,62 +765,69 @@
       requestAnimationFrame(frame);
     }
 
-    function resetHeroCard(){
-      if (!heroCard) return;
-      heroCard.classList.remove("is-playing", "is-complete");
-      countEls.forEach(function(el){
-        var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
-        var suffix = el.getAttribute("data-suffix") || "";
-        el.textContent = (0).toFixed(decimals) + suffix;
-      });
-    }
+    function initCardSequence(cardEl, replayBtn){
+      var countEls = cardEl.querySelectorAll("[data-count]");
 
-    function playHeroSequence(){
-      if (!heroCard) return;
-      if (reduceMotion) {
-        heroCard.classList.add("is-playing", "is-complete");
+      function resetCard(){
+        cardEl.classList.remove("is-playing", "is-complete");
         countEls.forEach(function(el){
-          var to = parseFloat(el.getAttribute("data-to"));
           var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
           var suffix = el.getAttribute("data-suffix") || "";
-          el.textContent = to.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+          el.textContent = (0).toFixed(decimals) + suffix;
         });
-        return;
       }
-      resetHeroCard();
-      requestAnimationFrame(function(){
-        heroCard.classList.add("is-playing");
-        window.setTimeout(function(){
-          countEls.forEach(animateCount);
-        }, 650);
-        window.setTimeout(function(){
-          heroCard.classList.add("is-complete");
-        }, 650 + 950);
-      });
-    }
 
-    if (heroCard && "IntersectionObserver" in window) {
-      var heroObserver = new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-          if (entry.isIntersecting) {
-            playHeroSequence();
-            heroObserver.disconnect();
-          }
+      function playSequence(){
+        if (reduceMotion) {
+          cardEl.classList.add("is-playing", "is-complete");
+          countEls.forEach(function(el){
+            var to = parseFloat(el.getAttribute("data-to"));
+            var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+            var suffix = el.getAttribute("data-suffix") || "";
+            el.textContent = to.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+          });
+          return;
+        }
+        resetCard();
+        requestAnimationFrame(function(){
+          cardEl.classList.add("is-playing");
+          window.setTimeout(function(){
+            countEls.forEach(animateCount);
+          }, 650);
+          window.setTimeout(function(){
+            cardEl.classList.add("is-complete");
+          }, 650 + 950);
         });
-      }, { threshold: 0.4 });
-      heroObserver.observe(heroCard);
-    } else {
-      playHeroSequence();
+      }
+
+      if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+              playSequence();
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.4 });
+        observer.observe(cardEl);
+      } else {
+        playSequence();
+      }
+
+      if (replayBtn) {
+        replayBtn.addEventListener("click", function(){
+          if (replayBtn.classList.contains("is-spinning")) return;
+          replayBtn.classList.add("is-spinning");
+          playSequence();
+          window.setTimeout(function(){ replayBtn.classList.remove("is-spinning"); }, 600);
+        });
+      }
     }
 
-    if (replayBtn) {
-      replayBtn.addEventListener("click", function(){
-        if (replayBtn.classList.contains("is-spinning")) return;
-        replayBtn.classList.add("is-spinning");
-        playHeroSequence();
-        window.setTimeout(function(){ replayBtn.classList.remove("is-spinning"); }, 600);
-      });
-    }
+    document.querySelectorAll(".stat-card[data-card]").forEach(function(cardEl){
+      var replayBtn = cardEl.parentElement.querySelector("[data-replay]");
+      initCardSequence(cardEl, replayBtn);
+    });
 
     // Subtle pointer tilt on the hero phone (fine pointers only, motion allowed)
     var phone = document.getElementById("hero-phone");
