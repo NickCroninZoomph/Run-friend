@@ -320,6 +320,32 @@
   .step h3{ font-family:"Fredoka",sans-serif; font-weight:600; font-size:1.25rem; }
   .step p{ color:var(--mist); font-size:0.95rem; line-height:1.55; }
 
+  /* ---------- gallery ---------- */
+  .gallery{ max-width:1180px; margin:0 auto; }
+  .gallery .lede{ margin-top:0.6rem; margin-bottom:2rem; }
+  .gallery__row{
+    display:flex; gap:1.25rem; overflow-x:auto; padding-bottom:0.5rem;
+    scroll-snap-type:x proximity;
+    margin:0 -1.25rem; padding-left:1.25rem; padding-right:1.25rem;
+  }
+  .gallery__row::-webkit-scrollbar{ height:6px; }
+  .gallery__row::-webkit-scrollbar-thumb{ background:var(--violet-line); border-radius:999px; }
+  .gallery__item{
+    flex:none; width:clamp(190px, 26vw, 260px);
+    scroll-snap-align:start;
+    margin:0; display:flex; flex-direction:column; gap:0.6rem;
+  }
+  .gallery__item img{
+    width:100%; aspect-ratio:760/1016; object-fit:cover;
+    border-radius:18px;
+    background:var(--violet-soft);
+    box-shadow:0 20px 40px -18px rgba(0,0,0,0.55);
+  }
+  .gallery__item figcaption{
+    font-family:"Space Mono",monospace; font-size:0.74rem; color:var(--mist);
+    text-align:center;
+  }
+
   /* ---------- showcase ---------- */
   .showcase{
     max-width:1180px; margin:0 auto;
@@ -527,6 +553,30 @@
         <p>Get a stylized character holding your real stats card, sized and ready to drop straight into your Instagram Story.</p>
       </li>
     </ol>
+  </section>
+
+  <section class="gallery" id="gallery" data-reveal>
+    <p class="eyebrow">Real renders</p>
+    <h2 class="display display--md">Meet a few Run Friends.</h2>
+    <p class="lede">Same app, same six stats, a different character every time.</p>
+    <div class="gallery__row">
+      <figure class="gallery__item">
+        <img src="images/christina-marathon.jpg" alt="A Run Friends character in marathon gear holding a Strava card for a 26.21 mile New York City marathon" loading="lazy">
+        <figcaption>Christina &middot; NYC Marathon &middot; 26.21 mi</figcaption>
+      </figure>
+      <figure class="gallery__item">
+        <img src="images/backpack-guy-miami.jpg" alt="A Run Friends character in running gear with a hydration pack holding a Strava card for a 6.21 mile Miami run" loading="lazy">
+        <figcaption>Miami, FL &middot; 6.21 mi loop</figcaption>
+      </figure>
+      <figure class="gallery__item">
+        <img src="images/bandana-utah.jpg" alt="A Run Friends character in a bandana pointing at a Strava card for an 8.42 mile Utah trail run" loading="lazy">
+        <figcaption>Utah trail &middot; 8.42 mi</figcaption>
+      </figure>
+      <figure class="gallery__item">
+        <img src="images/older-man-miami.jpg" alt="A Run Friends character holding a Strava card for a 6.21 mile Miami run, in the top 10 percent of runs that week" loading="lazy">
+        <figcaption>Miami, FL &middot; top 10% this week</figcaption>
+      </figure>
+    </div>
   </section>
 
   <section class="showcase" id="card">
